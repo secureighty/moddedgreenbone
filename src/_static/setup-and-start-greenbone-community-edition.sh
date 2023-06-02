@@ -19,6 +19,9 @@
 set -e
 
 DOWNLOAD_DIR=$HOME/greenbone-community-container
+export COMPOSE_HTTP_TIMEOUT=3600
+export DOCKER_CLIENT_TIMEOUT=3600
+
 
 installed() {
     # $1 should be the command to look for
@@ -52,7 +55,7 @@ echo "Starting Greenbone Community Containers $RELEASE"
 docker-compose -f $DOWNLOAD_DIR/docker-compose-$RELEASE.yml -p greenbone-community-edition up -d
 echo
 
-read -s -p "Password for admin user: " password
+read -p "Password for admin user: " password
 docker-compose -f $DOWNLOAD_DIR/docker-compose-$RELEASE.yml -p greenbone-community-edition \
     exec -u gvmd gvmd gvmd --user=admin --new-password=$password
 
